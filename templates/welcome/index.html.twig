@@ -1,0 +1,160 @@
+{# templates/welcome/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue sur Espace d'Expression{% endblock %}
+
+{% block body %}
+<div class="welcome-container">
+    <div class="welcome-hero">
+        <div class="welcome-overlay"></div>
+        <div class="container position-relative">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h1 class="display-3 fw-bold mb-4 text-white animate__animated animate__fadeInDown">Bienvenue sur Espace d'Expression</h1>
+                    <p class="lead mb-5 text-white-50 animate__animated animate__fadeIn animate__delay-1s">
+                        Un espace sûr pour partager vos pensées, émotions et expériences, sans jugement.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="welcome-card card border-0 shadow-lg rounded-4 overflow-hidden mb-5">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-5">
+                            <div class="feature-icon bg-primary bg-gradient mb-4">
+                                <i class="bi bi-chat-heart-fill"></i>
+                            </div>
+                            <h2 class="fw-bold mb-3">Exprimez-vous librement</h2>
+                            <p class="text-muted mb-4">
+                                Parfois, nous avons simplement besoin d'être écoutés. Cette plateforme vous offre un lieu où vous pouvez vous exprimer librement, de manière anonyme si vous le souhaitez, et recevoir le soutien d'une communauté bienveillante.
+                            </p>
+                        </div>
+
+                        <div class="row g-4 mb-5">
+                            <div class="col-md-6">
+                                <div class="feature-card p-4 h-100 rounded-3 shadow-sm">
+                                    <div class="feature-icon-sm text-primary mb-3">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </div>
+                                    <h5>Écriture libre</h5>
+                                    <p class="text-muted mb-0">Partagez vos pensées sans contraintes ni restrictions.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-card p-4 h-100 rounded-3 shadow-sm">
+                                    <div class="feature-icon-sm text-primary mb-3">
+                                        <i class="bi bi-incognito"></i>
+                                    </div>
+                                    <h5>Anonymat optionnel</h5>
+                                    <p class="text-muted mb-0">Choisissez de partager sous pseudonyme ou anonymement.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-card p-4 h-100 rounded-3 shadow-sm">
+                                    <div class="feature-icon-sm text-primary mb-3">
+                                        <i class="bi bi-emoji-heart-eyes"></i>
+                                    </div>
+                                    <h5>Interactions positives</h5>
+                                    <p class="text-muted mb-0">Recevez des émojis d'empathie et de soutien.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-card p-4 h-100 rounded-3 shadow-sm">
+                                    <div class="feature-icon-sm text-primary mb-3">
+                                        <i class="bi bi-people-fill"></i>
+                                    </div>
+                                    <h5>Communauté bienveillante</h5>
+                                    <p class="text-muted mb-0">Échangez avec des personnes qui vous comprennent.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <h4 class="mb-4">Prêt à commencer votre voyage d'expression ?</h4>
+                            <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
+                                <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg px-4 py-3 rounded-pill">
+                                    <i class="bi bi-person-plus me-2"></i>S'inscrire
+                                </a>
+                                <a href="{{ path('app_login') }}" class="btn btn-outline-primary btn-lg px-4 py-3 rounded-pill">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .welcome-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 8rem 0 6rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .welcome-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.05)" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') bottom no-repeat;
+        background-size: cover;
+    }
+    
+    .welcome-card {
+        margin-top: -5rem;
+        border: none;
+    }
+    
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .feature-icon i {
+        font-size: 2.5rem;
+        color: white;
+    }
+    
+    .feature-icon-sm {
+        font-size: 1.75rem;
+    }
+    
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+    }
+    
+    .btn-lg {
+        min-width: 180px;
+    }
+    
+    @media (max-width: 768px) {
+        .welcome-hero {
+            padding: 6rem 0 4rem;
+        }
+        
+        .welcome-card {
+            margin-top: -3rem;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Accueil - Espace d'Expression{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Animate.css for animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .navbar-nav .nav-link {
+            color: white !important;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #e2e8f0 !important;
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+            border-radius: 0.5rem;
+        }
+
+        .main-container {
+            padding-top: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .welcome-card, .post-card, .similar-experiences-card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .welcome-card:hover, .post-card:hover, .similar-experiences-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.75rem 1.5rem rgba(0,0,0,0.15);
+        }
+
+        .welcome-card .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        .post-card .card-header {
+            background: linear-gradient(135deg, #4c68d7 0%, #6a82fb 100%);
+            color: white;
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        .similar-experiences-card .card-header {
+            background: linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%);
+            color: white;
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        .form-control, .btn {
+            border-radius: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-secondary {
+            border-color: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-outline-secondary:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .reaction-btn.active {
+            transform: scale(1.1);
+        }
+
+        .list-group-item {
+            border: none;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .list-group-item:hover {
+            background: #f1f5f9;
+        }
+
+        .alert {
+            border-radius: 0.5rem;
+            box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.1);
+        }
+
+        .comment-input .input-group {
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .comment-input .form-control {
+            border-right: none;
+        }
+
+        .comment-input .btn {
+            border-left: none;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+
+        .footer p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding-top: 1rem;
+            }
+
+            .welcome-card, .post-card, .similar-experiences-card {
+                border-radius: 0.75rem;
+            }
+
+            .footer {
+                padding: 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i>{{ app.user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn">
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-container">
+        <!-- Flash messages -->
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show animate__animated animate__fadeIn" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Welcome card -->
+                <div class="welcome-card card mb-4 animate__animated animate__fadeIn">
+                    <div class="card-header">
+                        <h5 class="mb-0">Bienvenue{% if app.user %}, {{ app.user.username }}{% endif %}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Vous êtes connecté à votre espace d'expression personnel.</p>
+                        <p>N'hésitez pas à partager vos pensées ou à interagir avec la communauté.</p>
+                    </div>
+                </div>
+
+                <!-- Post form -->
+                <div class="post-card card mb-4 animate__animated animate__fadeIn animate__delay-1s">
+                    <div class="card-header">
+                        <h5 class="mb-0">Partagez vos pensées</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ path('post_create') }}" method="post">
+                            <div class="mb-3">
+                                <textarea class="form-control" name="content" rows="4" placeholder="Exprimez-vous librement..." required></textarea>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="is_anonymous" id="anonymousCheck">
+                                    <label class="form-check-label" for="anonymousCheck">
+                                        Publier anonymement
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Publier</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <h4 class="mb-3 animate__animated animate__fadeIn animate__delay-2s">Publications récentes</h4>
+
+                {% for post in recentPosts %}
+                <div class="post-card card mb-3 animate__animated animate__fadeInUp animate__delay-3s">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">{{ post.isAnonymous ? 'Anonyme' : (post.author ? post.author.username : 'Utilisateur inconnu') }}</h6>
+                            <small class="text-muted">{{ post.createdAt|ago }}</small>
+                        </div>
+                        <p class="card-text">{{ post.content }}</p>
+
+                        <div class="d-flex gap-2 mb-3">
+                            {% set userLiked = false %}
+                            {% set userSupported = false %}
+                            {% set userMeToo = false %}
+                            {% set likeCount = 0 %}
+                            {% set supportCount = 0 %}
+                            {% set meTooCount = 0 %}
+
+                            {% for reaction in post.reactions %}
+                                {% if reaction.type == 'like' %}
+                                    {% set likeCount = likeCount + 1 %}
+                                    {% if app.user and reaction.user and reaction.user.id == app.user.id %}
+                                        {% set userLiked = true %}
+                                    {% endif %}
+                                {% elseif reaction.type == 'support' %}
+                                    {% set supportCount = supportCount + 1 %}
+                                    {% if app.user and reaction.user and reaction.user.id == app.user.id %}
+                                        {% set userSupported = true %}
+                                    {% endif %}
+                                {% elseif reaction.type == 'me_too' %}
+                                    {% set meTooCount = meTooCount + 1 %}
+                                    {% if app.user and reaction.user and reaction.user.id == app.user.id %}
+                                        {% set userMeToo = true %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+
+                            <form action="{{ path('post_react', {id: post.id, type: 'like'}) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm reaction-btn {% if userLiked %}btn-danger active{% else %}btn-outline-secondary{% endif %}">
+                                    <i class="fas fa-heart"></i> {{ likeCount }}
+                                </button>
+                            </form>
+
+                            <form action="{{ path('post_react', {id: post.id, type: 'support'}) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm reaction-btn {% if userSupported %}btn-info active{% else %}btn-outline-secondary{% endif %}">
+                                    <i class="fas fa-hands-helping"></i> {{ supportCount }}
+                                </button>
+                            </form>
+
+                            <form action="{{ path('post_react', {id: post.id, type: 'me_too'}) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm reaction-btn {% if userMeToo %}btn-success active{% else %}btn-outline-secondary{% endif %}">
+                                    <i class="fas fa-check-circle"></i> Moi aussi ({{ meTooCount }})
+                                </button>
+                            </form>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <h6>Commentaires ({{ post.comments|length }})</h6>
+                            {% for comment in post.comments %}
+                            <div class="ms-3 mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="fw-bold">{{ comment.author ? comment.author.username : 'Utilisateur inconnu' }}</small>
+                                    <small class="text-muted">{{ comment.createdAt|ago }}</small>
+                                </div>
+                                <p class="mb-1">{{ comment.content }}</p>
+
+                                <div class="d-flex gap-2 mt-1">
+                                    {% set userLiked = false %}
+                                    {% set likeCount = 0 %}
+
+                                    {% for reaction in comment.reactions %}
+                                        {% if reaction.type == 'like' %}
+                                            {% set likeCount = likeCount + 1 %}
+                                            {% if app.user and reaction.user and reaction.user.id == app.user.id %}
+                                                {% set userLiked = true %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <form action="{{ path('comment_react', {id: comment.id, type: 'like'}) }}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm reaction-btn {% if userLiked %}btn-danger active{% else %}btn-outline-secondary{% endif %}">
+                                            <i class="fas fa-heart"></i> {{ likeCount }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <form action="{{ path('comment_create', {postId: post.id}) }}" method="post" class="comment-input">
+                            <div class="input-group">
+                                <input type="text" name="content" class="form-control" placeholder="Ajouter un commentaire..." required>
+                                <button class="btn btn-outline-primary" type="submit">Envoyer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-md-4">
+                <!-- Similar experiences -->
+                <div class="similar-experiences-card card animate__animated animate__fadeIn animate__delay-2s">
+                    <div class="card-header">
+                        <h5 class="mb-0">Expériences similaires</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Découvrez des témoignages de personnes ayant vécu des expériences similaires aux vôtres.</p>
+                        <div class="list-group">
+                            {% if categories|length > 0 %}
+                                {% for category in categories %}
+                                <a href="{{ path('category_show', {id: category.id}) }}" class="list-group-item list-group-item-action">{{ category.name }}</a>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-muted">Aucune catégorie disponible pour le moment.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-center animate__animated animate__fadeIn animate__delay-3s">
+        <div class="container">
+            <p class="mb-0">© {{ 'now'|date('Y') }} Espace d'Expression - Un lieu pour s'exprimer librement</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

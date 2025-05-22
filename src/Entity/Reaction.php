@@ -13,7 +13,7 @@ class Reaction
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
     private ?string $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'reactions')]
@@ -35,10 +35,9 @@ class Reaction
         return $this->type;
     }
 
-    public function setType(string $type): static
+    public function setType(string $type): self
     {
         $this->type = $type;
-
         return $this;
     }
 
@@ -47,10 +46,9 @@ class Reaction
         return $this->post;
     }
 
-    public function setPost(?Post $post): static
+    public function setPost(?Post $post): self
     {
         $this->post = $post;
-
         return $this;
     }
 
@@ -59,10 +57,9 @@ class Reaction
         return $this->comment;
     }
 
-    public function setComment(?Comment $comment): static
+    public function setComment(?Comment $comment): self
     {
         $this->comment = $comment;
-
         return $this;
     }
 
@@ -71,10 +68,9 @@ class Reaction
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(?User $user): self
     {
         $this->user = $user;
-
         return $this;
     }
 }

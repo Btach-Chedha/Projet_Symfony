@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Post</h1>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <p><strong>Content:</strong> {{ post.content }}</p>
+                <p><strong>Created At:</strong> {{ post.createdAt ? post.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+                <p><strong>Anonymous:</strong> {{ post.isAnonymous ? 'Yes' : 'No' }}</p>
+                <p><strong>Author:</strong> {{ post.author ? post.author.username : 'Unknown' }}</p>
+            </div>
+        </div>
+
+        <a href="{{ path('app_post_index') }}">Back to list</a>
+        {% if is_granted('ROLE_ADMIN') or (app.user and post.author and post.author.id == app.user.id) %}
+            <a href="{{ path('app_post_edit', {'id': post.id}) }}">Edit</a>
+        {% endif %}
+    </div>
+{% endblock %}

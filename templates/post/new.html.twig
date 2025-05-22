@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Post{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Create new Post</h1>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                {{ include('post/_form.html.twig', {'form': form, 'button_label': 'Publier'}) }}
+            </div>
+        </div>
+
+        <a href="{{ path('app_home') }}">Back to home</a>
+    </div>
+{% endblock %}

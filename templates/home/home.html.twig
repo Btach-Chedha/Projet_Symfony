@@ -27,15 +27,9 @@
                     <div class="card-body">
                         <h3 class="card-title">Partagez vos pensées</h3>
                         <form method="post" action="{{ path('app_post_new') }}">
-                            <div class="form-group">
-                                <textarea class="form-control" name="content" rows="4" placeholder="Exprimez-vous..." required></textarea>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="is_anonymous" id="is_anonymous">
-                                <label class="form-check-label" for="is_anonymous">Publier anonymement</label>
-                            </div>
+                            
                             <input type="hidden" name="_token" value="{{ csrf_token('post_new') }}">
-                            <button type="submit" class="btn btn-primary mt-2">Publier</button>
+                            <button type="submit" class="btn btn-primary mt-2">Créer</button>
                         </form>
                     </div>
                 </div>
@@ -83,9 +77,15 @@
                             {% endfor %}
 
                             <div class="mt-2">
-                                <a href="{{ path('app_post_react', {'id': post.id, 'type': 'like'}) }}" class="btn btn-outline-primary btn-sm {{ userLiked ? 'disabled' : '' }}">{{ likeCount }} J'aime</a>
-                                <a href="{{ path('app_post_react', {'id': post.id, 'type': 'support'}) }}" class="btn btn-outline-success btn-sm {{ userSupported ? 'disabled' : '' }}">{{ supportCount }} Soutien</a>
-                                <a href="{{ path('app_post_react', {'id': post.id, 'type': 'me_too'}) }}" class="btn btn-outline-info btn-sm {{ userMeToo ? 'disabled' : '' }}">Moi aussi ({{ meTooCount }})</a>
+                                <a href="{{ path('app_post_react', {'id': post.id, 'type': 'like'}) }}" class="btn btn-outline-primary btn-sm {{ userLiked ? 'disabled' : '' }}">
+                                    <i class="bi bi-heart-fill me-1"></i>{{ likeCount }} J'aime
+                                </a>
+                                <a href="{{ path('app_post_react', {'id': post.id, 'type': 'support'}) }}" class="btn btn-outline-success btn-sm {{ userSupported ? 'disabled' : '' }}">
+                                    <i class="bi bi-hand-thumbs-up-fill me-1"></i>{{ supportCount }} Soutien
+                                </a>
+                                <a href="{{ path('app_post_react', {'id': post.id, 'type': 'me_too'}) }}" class="btn btn-outline-info btn-sm {{ userMeToo ? 'disabled' : '' }}">
+                                    <i class="bi bi-emoji-smile-fill me-1"></i>Moi aussi ({{ meTooCount }})
+                                </a>
                             </div>
 
                             <div class="mt-3">
@@ -116,7 +116,9 @@
                                                 {% endif %}
                                             {% endfor %}
 
-                                            <a href="{{ path('app_comment_react', {'id': comment.id, 'type': 'like'}) }}" class="btn btn-outline-primary btn-sm {{ userLiked ? 'disabled' : '' }}">{{ likeCount }} J'aime</a>
+                                            <a href="{{ path('app_comment_react', {'id': comment.id, 'type': 'like'}) }}" class="btn btn-outline-primary btn-sm {{ userLiked ? 'disabled' : '' }}">
+                                                <i class="bi bi-heart-fill me-1"></i>{{ likeCount }} J'aime
+                                            </a>
                                         </div>
                                     </div>
                                 {% endfor %}
@@ -154,7 +156,208 @@
         </div>
     </div>
 
-    <footer class="mt-5 text-center">
-        <p>© {{ 'now'|date('Y') }} Espace d'Expression - Un lieu pour s'exprimer librement</p>
-    </footer>
+    
+
+    <style>
+        /* General container styling */
+        .container {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        /* Card styling for posts and sidebar */
+        .card {
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Alerts for flash messages */
+        .alert {
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-right: 3rem;
+        }
+
+        .alert .close {
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: inherit;
+            opacity: 0.7;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-color: #bee5eb;
+        }
+
+        /* Form styling */
+        .form-control {
+            border-radius: 0.5rem;
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .form-check-label {
+            color: #555;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-outline-primary {
+            border-color: #667eea;
+            color: #667eea;
+            border-radius: 0.5rem;
+        }
+
+        .btn-outline-primary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-outline-success {
+            border-color: #28a745;
+            color: #28a745;
+            border-radius: 0.5rem;
+        }
+
+        .btn-outline-success:hover {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-outline-info {
+            border-color: #17a2b8;
+            color: #17a2b8;
+            border-radius: 0.5rem;
+        }
+
+        .btn-outline-info:hover {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-danger {
+            border-radius: 0.5rem;
+        }
+
+        /* Post and comment styling */
+        .card.mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        .text-muted {
+            font-size: 0.85rem;
+        }
+
+        .float-right {
+            float: right !important;
+        }
+
+        /* Sidebar styling */
+        .list-group-item {
+            border: none;
+            padding: 0.75rem 1.5rem;
+            color: #555;
+            transition: background-color 0.3s ease;
+        }
+
+        .list-group-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Footer styling */
+        footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem 0;
+            border-top-left-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+            }
+
+            .card {
+                margin-bottom: 1rem;
+            }
+
+            .card-header {
+                font-size: 0.85rem;
+            }
+
+            .btn-lg {
+                min-width: 140px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 {% endblock %}
